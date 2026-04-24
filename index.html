@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Latest PMQs Revision</title>
+
+  <style>
+  :root {
+    --gov-blue: #1d70b8;
+    --gov-blue-dark: #003078;
+    --gov-black: #0b0c0c;
+    --gov-white: #ffffff;
+    --gov-light-grey: #f3f2f1;
+    --gov-mid-grey: #b1b4b6;
+    --gov-dark-grey: #505a5f;
+    --gov-border: #b1b4b6;
+    --gov-yellow: #ffdd00;
+    --gov-green: #00703c;
+    --gov-red: #d4351c;
+    --text: #0b0c0c;
+    --muted: #505a5f;
+    --shadow: 0 2px 0 rgba(11, 12, 12, 0.12);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    background: var(--gov-light-grey);
+  }
+
+  body::before {
+    display: none;
+  }
+
+  .wrap {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto 56px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero {
+    background: var(--gov-blue-dark);
+    color: var(--gov-white);
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 34px 0 38px;
+    margin: 0 calc(50% - 50vw) 28px;
+  }
+
+  .hero::before,
+  .quote-card::before,
+  .modal::before,
+  .pmqs-summary-box::before {
+    display: none;
+  }
+
+  .hero-top {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+
+  h1 {
+    margin: 0 0 14px;
+    font-size: clamp(2.2rem, 4vw, 3.6rem);
+    line-height: 1.03;
+    letter-spacing: -0.03em;
+    color: var(--gov-white);
+    font-weight: 700;
+  }
+
+  .sub {
+    max-width: 860px;
+    margin: 0;
+    line-height: 1.55;
+    color: var(--gov-white);
+    font-size: 1.08rem;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+
+  .badge {
+    border-radius: 0;
+    background: var(--gov-white);
+    color: var(--gov-black);
+    border: 0;
+    border-left: 6px solid var(--gov-yellow);
+    padding: 9px 12px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    box-shadow: none;
+  }
+
+  .btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  button {
+    border: 0;
+    border-radius: 0;
+    padding: 11px 16px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 0 #002d18;
+    transition: background .15s ease, transform .05s ease;
+  }
+
+  button:hover {
+    transform: none;
+  }
+
+  button:active {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+
+  button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .primary {
+    background: var(--gov-green);
+    color: var(--gov-white);
+    border: 2px solid transparent;
+  }
+
+  .primary:hover {
+    background: #005a30;
+  }
+
+  .secondary {
+    background: var(--gov-white);
+    color: var(--gov-blue);
+    border: 2px solid var(--gov-blue);
+    box-shadow: none;
+  }
+
+  .secondary:hover {
+    color: var(--gov-blue-dark);
+    border-color: var(--gov-blue-dark);
+  }
+
+  .status-box {
+    border-radius: 0;
+    padding: 16px 18px;
+    margin-bottom: 22px;
+    background: var(--gov-white);
+    border: 1px solid var(--gov-border);
+    border-left: 6px solid var(--gov-blue);
+    color: var(--gov-black);
+    box-shadow: var(--shadow);
+    line-height: 1.55;
+    font-weight: 400;
+  }
+
+  .source-link {
+    color: var(--gov-blue);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    font-weight: 700;
+  }
+
+  .source-link:hover {
+    color: var(--gov-blue-dark);
+  }
+
+  .pmqs-summary-box {
+    border-radius: 0;
+    padding: 0;
+    margin-bottom: 26px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1.08fr 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .summary-panel {
+    border-radius: 0;
+    padding: 22px;
+    background: var(--gov-white);
+    border: 1px solid var(--gov-border);
+    border-top: 5px solid var(--gov-blue);
+    box-shadow: var(--shadow);
+  }
+
+  .pmqs-summary-box h2 {
+    margin: 0 0 12px;
+    font-size: 1.45rem;
+    line-height: 1.2;
+    color: var(--gov-black);
+    font-weight: 700;
+  }
+
+  .pmqs-summary-text {
+    color: var(--gov-black);
+    line-height: 1.65;
+    margin: 0;
+    max-width: 980px;
+  }
+
+  .opposition-question-list {
+    margin: 0;
+    padding-left: 22px;
+    color: var(--gov-black);
+    line-height: 1.6;
+  }
+
+  .opposition-question-list li {
+    margin-bottom: 9px;
+    padding-left: 4px;
+  }
+
+  .question-tag {
+    display: inline-block;
+    margin-right: 6px;
+    font-weight: 700;
+    color: var(--gov-blue-dark);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    align-items: stretch;
+  }
+
+  .quote-card {
+    border-radius: 0;
+    overflow: hidden;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--gov-white);
+    border: 1px solid var(--gov-border);
+    border-top: 5px solid var(--gov-blue-dark);
+    box-shadow: var(--shadow);
+  }
+
+  .quote-image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    background: var(--gov-light-grey);
+    border-bottom: 1px solid var(--gov-border);
+    filter: saturate(0.95) contrast(1.02);
+  }
+
+  .quote-image-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: var(--gov-light-grey);
+    border-bottom: 1px solid var(--gov-border);
+    display: grid;
+    place-items: center;
+    font-size: 3rem;
+    color: var(--gov-dark-grey);
+  }
+
+  .quote-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .quote-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .role-pill {
+    border-radius: 0;
+    padding: 5px 8px;
+    background: var(--gov-blue-dark);
+    color: var(--gov-white);
+    border: 0;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    font-weight: 700;
+  }
+
+  .speaker {
+    font-weight: 700;
+    color: var(--gov-black);
+  }
+
+  .topic {
+    color: var(--gov-blue-dark);
+    font-weight: 700;
+    font-size: .95rem;
+  }
+
+  .quote-short {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.12rem;
+    line-height: 1.55;
+    margin: 0;
+    color: var(--gov-black);
+    font-weight: 700;
+  }
+
+  .summary {
+    color: var(--gov-dark-grey);
+    line-height: 1.55;
+    margin: 0;
+    font-size: .97rem;
+  }
+
+  .view-btn {
+    margin-top: auto;
+    align-self: flex-start;
+    box-shadow: 0 2px 0 #002d18;
+    padding: 10px 14px;
+  }
+
+  .empty {
+    grid-column: 1 / -1;
+    border-radius: 0;
+    padding: 24px;
+    background: var(--gov-white);
+    border: 1px solid var(--gov-border);
+    border-left: 6px solid var(--gov-red);
+    box-shadow: var(--shadow);
+    color: var(--gov-black);
+    line-height: 1.65;
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 12, 12, .72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+    backdrop-filter: none;
+  }
+
+  .modal {
+    width: min(820px, 100%);
+    max-height: min(88vh, 820px);
+    overflow: auto;
+    border-radius: 0;
+    padding: 24px;
+    background: var(--gov-white);
+    border: 0;
+    box-shadow: 0 8px 28px rgba(0,0,0,.35);
+  }
+
+  .modal h3 {
+    margin: 0 0 10px;
+    font-size: 1.45rem;
+    line-height: 1.25;
+    color: var(--gov-black);
+    font-weight: 700;
+  }
+
+  .modal p {
+    margin: 0;
+    color: var(--gov-dark-grey);
+    line-height: 1.6;
+  }
+
+  .context-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 0;
+    margin: 16px 0;
+    border: 1px solid var(--gov-border);
+    background: var(--gov-light-grey);
+  }
+
+  .full-quote-box,
+  .context-box,
+  .edexcel-box {
+    border-radius: 0;
+    padding: 16px;
+    background: var(--gov-light-grey);
+    border: 1px solid var(--gov-border);
+    border-left: 5px solid var(--gov-blue);
+    margin-top: 14px;
+    line-height: 1.65;
+  }
+
+  .full-quote-box {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.08rem;
+    color: var(--gov-black);
+    font-weight: 700;
+  }
+
+  .box-title {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--gov-blue-dark);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .edexcel-list {
+    margin: 8px 0 0;
+    padding-left: 20px;
+    color: var(--gov-black);
+  }
+
+  .edexcel-list li {
+    margin-bottom: 7px;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .input {
+    width: 100%;
+    margin-top: 16px;
+    border-radius: 0;
+    border: 2px solid var(--gov-black);
+    background: var(--gov-white);
+    color: var(--gov-black);
+    padding: 12px 14px;
+    font: inherit;
+    line-height: 1.5;
+    outline: none;
+  }
+
+  .input:focus {
+    border-color: var(--gov-black);
+    box-shadow: 0 0 0 4px var(--gov-yellow);
+  }
+
+  .login-status {
+    margin-top: 12px;
+    min-height: 1.3em;
+    color: var(--gov-dark-grey);
+    font-size: .95rem;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  @media (max-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .summary-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .wrap {
+      width: min(100% - 24px, 1180px);
+    }
+
+    .hero-top {
+      width: min(100% - 24px, 1180px);
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero {
+      padding: 28px 0 30px;
+    }
+
+    .btns {
+      width: 100%;
+    }
+
+    button {
+      width: 100%;
+    }
+
+    .modal {
+      padding: 18px;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal">
+      <h3>Enter password to access the website</h3>
+      <p>This checks the password with your Cloudflare Worker before unlocking the site and loading PMQs revision quotes.</p>
+      <input class="input" id="passwordInput" type="password" placeholder="Enter password" />
+      <div class="login-status" id="loginStatus"></div>
+      <div class="modal-actions">
+        <button class="primary" id="loginBtn">Enter Website</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="contextModal">
+    <div class="modal">
+      <h3 id="modalTitle">PMQs quote</h3>
+      <p id="modalSubtitle"></p>
+
+      <img class="context-image hidden" id="modalImage" alt="" />
+
+      <div class="full-quote-box">
+        <div class="box-title">Full quote</div>
+        <div id="modalFullQuote"></div>
+      </div>
+
+      <div class="context-box">
+        <div class="box-title">What it means in context</div>
+        <div id="modalContext"></div>
+      </div>
+
+      <div class="edexcel-box">
+        <div class="box-title">How it links to Edexcel A-Level Politics</div>
+        <ul class="edexcel-list" id="modalEdexcelLinks"></ul>
+      </div>
+
+      <div class="modal-actions">
+        <button class="secondary" id="closeContextBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap hidden" id="appWrap">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <h1>Latest PMQs</h1>
+          <p class="sub">
+            Short quote cards from Prime Minister’s Questions. Click each card to see the full quote,
+            what it means in context, and how it links to Edexcel A-Level Politics.
+          </p>
+
+          <div class="badge-row">
+            <div class="badge" id="dateBadge">Date loading...</div>
+            <div class="badge" id="sourceBadge">Source loading...</div>
+            <div class="badge" id="quoteCountBadge">Quotes loading...</div>
+          </div>
+        </div>
+
+        <div class="btns">
+          <button class="secondary" id="refreshBtn">Refresh PMQs</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="status-box" id="statusBox">Loading PMQs...</div>
+
+    <section class="pmqs-summary-box" id="pmqsSummaryBox">
+      <div class="summary-grid">
+        <div class="summary-panel">
+          <h2>What happened in the latest PMQs?</h2>
+          <p class="pmqs-summary-text" id="pmqsSummaryText">
+            Loading the main PMQs summary...
+          </p>
+        </div>
+
+        <div class="summary-panel">
+          <h2>Six opposition questions</h2>
+          <ol class="opposition-question-list" id="oppositionQuestionsList">
+            <li>Loading opposition questions...</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" id="quoteGrid"></section>
+  </main>
+
+  <script>
+    const WORKER_BASE_URL = "https://hidden-smoke-8e93.clockworksilas.workers.dev";
+
+    const STORAGE_KEYS = {
+      sitePassword: "daily5_site_password_v1"
+    };
+
+    let latestQuotes = [];
+
+    const loginModal = document.getElementById("loginModal");
+    const passwordInput = document.getElementById("passwordInput");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginStatus = document.getElementById("loginStatus");
+    const appWrap = document.getElementById("appWrap");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const statusBox = document.getElementById("statusBox");
+    const quoteGrid = document.getElementById("quoteGrid");
+    const dateBadge = document.getElementById("dateBadge");
+    const sourceBadge = document.getElementById("sourceBadge");
+    const quoteCountBadge = document.getElementById("quoteCountBadge");
+
+    const pmqsSummaryText = document.getElementById("pmqsSummaryText");
+    const oppositionQuestionsList = document.getElementById("oppositionQuestionsList");
+
+    const contextModal = document.getElementById("contextModal");
+    const closeContextBtn = document.getElementById("closeContextBtn");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalSubtitle = document.getElementById("modalSubtitle");
+    const modalImage = document.getElementById("modalImage");
+    const modalFullQuote = document.getElementById("modalFullQuote");
+    const modalContext = document.getElementById("modalContext");
+    const modalEdexcelLinks = document.getElementById("modalEdexcelLinks");
+
+    function getSavedPassword() {
+      return localStorage.getItem(STORAGE_KEYS.sitePassword) || "";
+    }
+
+    function savePassword(password) {
+      localStorage.setItem(STORAGE_KEYS.sitePassword, password);
+    }
+
+    function clearSavedPassword() {
+      localStorage.removeItem(STORAGE_KEYS.sitePassword);
+    }
+
+    async function verifyPassword(password) {
+      const response = await fetch(`${WORKER_BASE_URL}/api/login`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ password })
+      });
+
+      if (!response.ok) return false;
+
+      const data = await response.json().catch(() => ({}));
+      return Boolean(data.ok);
+    }
+
+    async function fetchLatestPmqs() {
+      const password = getSavedPassword();
+
+      if (!password) {
+        throw new Error("No saved password. Please log in again.");
+      }
+
+      const response = await fetch(`${WORKER_BASE_URL}/api/pmq/latest`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ password })
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || data.ok === false) {
+        if (response.status === 401) clearSavedPassword();
+        throw new Error(data.detail || data.error || `PMQs request failed: ${response.status}`);
+      }
+
+      return data.result || data;
+    }
+
+    async function login() {
+      const password = passwordInput.value.trim();
+
+      if (!password) {
+        loginStatus.textContent = "Enter a password first.";
+        return;
+      }
+
+      loginBtn.disabled = true;
+      loginStatus.textContent = "Checking password...";
+
+      try {
+        const ok = await verifyPassword(password);
+
+        if (!ok) {
+          clearSavedPassword();
+          loginStatus.textContent = "Wrong password. Try again.";
+          return;
+        }
+
+        savePassword(password);
+        loginStatus.textContent = "";
+        loginModal.classList.add("hidden");
+        appWrap.classList.remove("hidden");
+
+        await loadPmqs();
+      } catch (error) {
+        loginStatus.textContent = error.message || "Could not reach the Worker.";
+      } finally {
+        loginBtn.disabled = false;
+      }
+    }
+
+    async function boot() {
+      const saved = getSavedPassword();
+
+      if (!saved) return;
+
+      loginStatus.textContent = "Checking saved access...";
+
+      const ok = await verifyPassword(saved).catch(() => false);
+
+      if (ok) {
+        loginModal.classList.add("hidden");
+        appWrap.classList.remove("hidden");
+        await loadPmqs();
+        return;
+      }
+
+      clearSavedPassword();
+      loginStatus.textContent = "Saved password failed. Enter it again.";
+    }
+
+    async function loadPmqs() {
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = "Loading...";
+      statusBox.textContent = "Loading latest PMQs quotes...";
+      quoteGrid.innerHTML = "";
+      pmqsSummaryText.textContent = "Loading the main PMQs summary...";
+      oppositionQuestionsList.innerHTML = "<li>Loading opposition questions...</li>";
+
+      try {
+        const data = await fetchLatestPmqs();
+        renderPmqs(data);
+      } catch (error) {
+        statusBox.textContent = error.message || "Could not load PMQs.";
+        pmqsSummaryText.textContent = "Could not load the PMQs summary.";
+        oppositionQuestionsList.innerHTML = "<li>Could not load opposition questions.</li>";
+
+        quoteGrid.innerHTML = `
+          <div class="empty">
+            <strong>Could not load PMQs.</strong><br>
+            ${escapeHtml(error.message || "Unknown error")}
+          </div>
+        `;
+
+        if ((error.message || "").toLowerCase().includes("unauthorized")) {
+          loginModal.classList.remove("hidden");
+          appWrap.classList.add("hidden");
+        }
+      } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = "Refresh PMQs";
+      }
+    }
+
+    function renderPmqs(data) {
+      const quotes = Array.isArray(data.quotes) ? data.quotes : [];
+      latestQuotes = quotes;
+
+      renderPmqsSummary(data, quotes);
+
+      dateBadge.textContent = data.pmqsDate
+        ? `PMQs date: ${formatDate(data.pmqsDate)}`
+        : "PMQs date unavailable";
+
+      sourceBadge.textContent = data.sourceName || "UK Parliament Hansard";
+      quoteCountBadge.textContent = `${quotes.length} quote${quotes.length === 1 ? "" : "s"}`;
+
+      const transcriptLink = data.transcriptUrl
+        ? `<a class="source-link" href="${escapeAttr(data.transcriptUrl)}" target="_blank" rel="noopener">Open Hansard source</a>`
+        : "";
+
+      statusBox.innerHTML = `
+        ${data.noPmqsThisWeek && data.noPmqsMessage ? escapeHtml(data.noPmqsMessage) + "<br>" : ""}
+        Showing ${quotes.length} quote${quotes.length === 1 ? "" : "s"} from ${escapeHtml(data.sourceName || "UK Parliament Hansard")}.
+        ${transcriptLink ? "<br>" + transcriptLink : ""}
+      `;
+
+      if (!quotes.length) {
+        quoteGrid.innerHTML = `
+          <div class="empty">
+            No PMQs quote cards came back from the Worker. The transcript may have loaded, but Groq did not return usable quote data.
+          </div>
+        `;
+        return;
+      }
+
+      quoteGrid.innerHTML = quotes.map((quote, index) => quoteCardHtml(quote, index)).join("");
+
+      document.querySelectorAll(".view-btn").forEach((button) => {
+        button.addEventListener("click", () => {
+          openContextModal(Number(button.dataset.index));
+        });
+      });
+
+      document.querySelectorAll(".quote-image").forEach((image) => {
+        image.addEventListener("error", () => {
+          const placeholder = document.createElement("div");
+          placeholder.className = "quote-image-placeholder";
+          placeholder.textContent = "🏛️";
+          image.replaceWith(placeholder);
+        });
+      });
+    }
+
+    function renderPmqsSummary(data, quotes) {
+      const summary =
+        data.pmqsSummary ||
+        data.summary ||
+        buildFallbackPmqsSummary(quotes);
+
+      pmqsSummaryText.textContent = summary;
+
+      const questions =
+        Array.isArray(data.oppositionQuestions) && data.oppositionQuestions.length
+          ? data.oppositionQuestions
+          : buildFallbackOppositionQuestions(quotes);
+
+      oppositionQuestionsList.innerHTML = questions
+        .slice(0, 6)
+        .map((question, index) => `
+          <li>
+            <span class="question-tag">Q${index + 1}.</span>
+            ${escapeHtml(question)}
+          </li>
+        `)
+        .join("");
+    }
+
+    function buildFallbackPmqsSummary(quotes) {
+      if (!quotes.length) {
+        return "The latest PMQs summary could not be generated yet. Once the Worker returns quote data, this box will summarise the main exchange between the Prime Minister and the Leader of the Opposition.";
+      }
+
+      const topics = [...new Set(
+        quotes
+          .map(q => q.topic)
+          .filter(Boolean)
+          .slice(0, 4)
+      )];
+
+      if (topics.length) {
+        return `The latest PMQs focused on ${topics.join(", ")}. The opposition used its questions to challenge the Prime Minister’s record and force the government to defend its position, while the Prime Minister responded by trying to reframe the debate and present the government as competent and accountable.`;
+      }
+
+      return "The latest PMQs centred on the opposition challenging the Prime Minister’s record, with the Prime Minister using the exchange to defend the government and control the political narrative.";
+    }
+
+    function buildFallbackOppositionQuestions(quotes) {
+      const oppositionQuotes = quotes.filter(q => {
+        const text = `${q.speaker || ""} ${q.role || ""}`.toLowerCase();
+        return text.includes("badenoch") || text.includes("opposition") || text.includes("shadow");
+      });
+
+      const questions = oppositionQuotes
+        .map(q => q.fullQuote || q.quote || q.shortQuote || q.summary || "")
+        .filter(Boolean)
+        .map(q => q.replace(/\s+/g, " ").trim());
+
+      if (questions.length) {
+        return questions.slice(0, 6);
+      }
+
+      return [
+        "The opposition challenged the Prime Minister on the government’s overall record.",
+        "The opposition pressed the Prime Minister on policy delivery and whether promises had been met.",
+        "The opposition asked whether the government was taking responsibility for current problems.",
+        "The opposition questioned the Prime Minister’s judgement and leadership.",
+        "The opposition tried to expose weaknesses in the government’s argument.",
+        "The opposition used PMQs to frame itself as an alternative government."
+      ];
+    }
+
+    function quoteCardHtml(quote, index) {
+      const imageUrl = quote.imageUrl || "";
+      const imageAlt = quote.imageAlt || quote.speaker || "PMQs speaker";
+      const speaker = quote.speaker || "Speaker";
+      const role = quote.role || "";
+      const topic = quote.topic || "PMQs";
+
+      const fullQuote = getFullQuote(quote);
+      const shortQuote = quote.shortQuote || shortenQuote(fullQuote, 90);
+      const summary = quote.summary || "Click to see what this means in context.";
+
+      return `
+        <article class="quote-card">
+          ${imageUrl
+            ? `<img class="quote-image" src="${escapeAttr(imageUrl)}" alt="${escapeAttr(imageAlt)}" loading="lazy" />`
+            : `<div class="quote-image-placeholder">🏛️</div>`
+          }
+
+          <div class="quote-body">
+            <div class="quote-meta">
+              <span class="role-pill">${escapeHtml(role)}</span>
+              <span class="speaker">${escapeHtml(speaker)}</span>
+            </div>
+
+            <div class="topic">${escapeHtml(topic)}</div>
+
+            <p class="quote-short">“${escapeHtml(shortQuote)}”</p>
+
+            <p class="summary">${escapeHtml(shortenQuote(summary, 120))}</p>
+
+            <button class="primary view-btn" data-index="${index}">View context</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function openContextModal(index) {
+      const quote = latestQuotes[index];
+      if (!quote) return;
+
+      const speaker = quote.speaker || "Speaker";
+      const role = quote.role || "";
+      const topic = quote.topic || "PMQs";
+      const fullQuote = getFullQuote(quote);
+      const context = getContextText(quote);
+      const links = getEdexcelLinks(quote);
+
+      modalTitle.textContent = `${speaker}${role ? " · " + role : ""}`;
+      modalSubtitle.textContent = topic;
+
+      if (quote.imageUrl) {
+        modalImage.src = quote.imageUrl;
+        modalImage.alt = quote.imageAlt || speaker;
+        modalImage.classList.remove("hidden");
+      } else {
+        modalImage.classList.add("hidden");
+      }
+
+      modalFullQuote.textContent = `“${fullQuote}”`;
+      modalContext.textContent = context;
+
+      modalEdexcelLinks.innerHTML = links
+        .map((item) => `<li>${escapeHtml(item)}</li>`)
+        .join("");
+
+      contextModal.classList.remove("hidden");
+    }
+
+    function closeContextModal() {
+      contextModal.classList.add("hidden");
+      modalImage.src = "";
+    }
+
+    function getFullQuote(quote) {
+      return quote.fullQuote || quote.quote || quote.shortQuote || "Quote unavailable.";
+    }
+
+    function getContextText(quote) {
+      return quote.context ||
+        quote.summary ||
+        "This quote matters because it shows the opposition using PMQs to scrutinise the Prime Minister, while the Prime Minister attempts to defend the government’s record and frame the political debate.";
+    }
+
+    function getEdexcelLinks(quote) {
+      if (Array.isArray(quote.edexcelLinks) && quote.edexcelLinks.length) {
+        return quote.edexcelLinks;
+      }
+
+      return [
+        "Parliamentary scrutiny of the executive: PMQs is a public mechanism for questioning the Prime Minister.",
+        "Opposition and accountability: the Leader of the Opposition uses PMQs to challenge government policy and performance.",
+        "Prime Ministerial power: the Prime Minister uses PMQs to defend the executive and control the political narrative.",
+        "Representative democracy: PMQs demonstrates elected representatives debating issues in Parliament."
+      ];
+    }
+
+    function shortenQuote(text, maxLength) {
+      const clean = String(text || "").replace(/\s+/g, " ").trim();
+
+      if (clean.length <= maxLength) return clean;
+
+      const sliced = clean.slice(0, maxLength);
+      const lastSpace = sliced.lastIndexOf(" ");
+
+      if (lastSpace > 40) {
+        return sliced.slice(0, lastSpace) + "...";
+      }
+
+      return sliced + "...";
+    }
+
+    function formatDate(iso) {
+      const date = new Date(`${iso}T12:00:00Z`);
+
+      if (Number.isNaN(date.getTime())) return iso;
+
+      return date.toLocaleDateString("en-GB", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function escapeAttr(value) {
+      return escapeHtml(value);
+    }
+
+    loginBtn.addEventListener("click", login);
+
+    passwordInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") login();
+    });
+
+    refreshBtn.addEventListener("click", loadPmqs);
+    closeContextBtn.addEventListener("click", closeContextModal);
+
+    contextModal.addEventListener("click", (event) => {
+      if (event.target === contextModal) closeContextModal();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeContextModal();
+    });
+
+    boot();
+  </script>
+</body>
+</html>
