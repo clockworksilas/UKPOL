@@ -6,523 +6,533 @@
   <title>Latest PMQs Revision</title>
 
   <style>
-  :root {
-    --gov-blue: #1d70b8;
-    --gov-blue-dark: #003078;
-    --gov-black: #0b0c0c;
-    --gov-white: #ffffff;
-    --gov-light-grey: #f3f2f1;
-    --gov-mid-grey: #b1b4b6;
-    --gov-dark-grey: #505a5f;
-    --gov-border: #b1b4b6;
-    --gov-yellow: #ffdd00;
-    --gov-green: #00703c;
-    --gov-red: #d4351c;
-    --text: #0b0c0c;
-    --muted: #505a5f;
-    --shadow: 0 2px 0 rgba(11, 12, 12, 0.12);
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
-    color: var(--text);
-    background: var(--gov-light-grey);
-  }
-
-  body::before {
-    display: none;
-  }
-
-  .wrap {
-    width: min(1180px, calc(100% - 32px));
-    margin: 0 auto 56px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero {
-    background: var(--gov-blue-dark);
-    color: var(--gov-white);
-    border: 0;
-    box-shadow: none;
-    border-radius: 0;
-    padding: 34px 0 38px;
-    margin: 0 calc(50% - 50vw) 28px;
-  }
-
-  .hero::before,
-  .quote-card::before,
-  .modal::before,
-  .pmqs-summary-box::before {
-    display: none;
-  }
-
-  .hero-top {
-    width: min(1180px, calc(100% - 32px));
-    margin: 0 auto;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 22px;
-    flex-wrap: wrap;
-  }
-
-  h1 {
-    margin: 0 0 14px;
-    font-size: clamp(2.2rem, 4vw, 3.6rem);
-    line-height: 1.03;
-    letter-spacing: -0.03em;
-    color: var(--gov-white);
-    font-weight: 700;
-  }
-
-  .sub {
-    max-width: 860px;
-    margin: 0;
-    line-height: 1.55;
-    color: var(--gov-white);
-    font-size: 1.08rem;
-  }
-
-  .badge-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 18px;
-  }
-
-  .badge {
-    border-radius: 0;
-    background: var(--gov-white);
-    color: var(--gov-black);
-    border: 0;
-    border-left: 6px solid var(--gov-yellow);
-    padding: 9px 12px;
-    font-weight: 700;
-    font-size: 0.92rem;
-    box-shadow: none;
-  }
-
-  .btns {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  button {
-    border: 0;
-    border-radius: 0;
-    padding: 11px 16px;
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 2px 0 #002d18;
-    transition: background .15s ease, transform .05s ease;
-  }
-
-  button:hover {
-    transform: none;
-  }
-
-  button:active {
-    transform: translateY(2px);
-    box-shadow: none;
-  }
-
-  button:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .primary {
-    background: var(--gov-green);
-    color: var(--gov-white);
-    border: 2px solid transparent;
-  }
-
-  .primary:hover {
-    background: #005a30;
-  }
-
-  .secondary {
-    background: var(--gov-white);
-    color: var(--gov-blue);
-    border: 2px solid var(--gov-blue);
-    box-shadow: none;
-  }
-
-  .secondary:hover {
-    color: var(--gov-blue-dark);
-    border-color: var(--gov-blue-dark);
-  }
-
-  .status-box {
-    border-radius: 0;
-    padding: 16px 18px;
-    margin-bottom: 22px;
-    background: var(--gov-white);
-    border: 1px solid var(--gov-border);
-    border-left: 6px solid var(--gov-blue);
-    color: var(--gov-black);
-    box-shadow: var(--shadow);
-    line-height: 1.55;
-    font-weight: 400;
-  }
-
-  .source-link {
-    color: var(--gov-blue);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
-    font-weight: 700;
-  }
-
-  .source-link:hover {
-    color: var(--gov-blue-dark);
-  }
-
-  .pmqs-summary-box {
-    border-radius: 0;
-    padding: 0;
-    margin-bottom: 26px;
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-  }
-
-  .summary-grid {
-    display: grid;
-    grid-template-columns: 1.08fr 1fr;
-    gap: 22px;
-    align-items: start;
-  }
-
-  .summary-panel {
-    border-radius: 0;
-    padding: 22px;
-    background: var(--gov-white);
-    border: 1px solid var(--gov-border);
-    border-top: 5px solid var(--gov-blue);
-    box-shadow: var(--shadow);
-  }
-
-  .pmqs-summary-box h2 {
-    margin: 0 0 12px;
-    font-size: 1.45rem;
-    line-height: 1.2;
-    color: var(--gov-black);
-    font-weight: 700;
-  }
-
-  .pmqs-summary-text {
-    color: var(--gov-black);
-    line-height: 1.65;
-    margin: 0;
-    max-width: 980px;
-  }
-
-  .opposition-question-list {
-    margin: 0;
-    padding-left: 22px;
-    color: var(--gov-black);
-    line-height: 1.6;
-  }
-
-  .opposition-question-list li {
-    margin-bottom: 9px;
-    padding-left: 4px;
-  }
-
-  .question-tag {
-    display: inline-block;
-    margin-right: 6px;
-    font-weight: 700;
-    color: var(--gov-blue-dark);
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 22px;
-    align-items: stretch;
-  }
-
-  .quote-card {
-    border-radius: 0;
-    overflow: hidden;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    background: var(--gov-white);
-    border: 1px solid var(--gov-border);
-    border-top: 5px solid var(--gov-blue-dark);
-    box-shadow: var(--shadow);
-  }
-
-  .quote-image {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-    background: var(--gov-light-grey);
-    border-bottom: 1px solid var(--gov-border);
-    filter: saturate(0.95) contrast(1.02);
-  }
-
-  .quote-image-placeholder {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    background: var(--gov-light-grey);
-    border-bottom: 1px solid var(--gov-border);
-    display: grid;
-    place-items: center;
-    font-size: 3rem;
-    color: var(--gov-dark-grey);
-  }
-
-  .quote-body {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    flex: 1;
-  }
-
-  .quote-meta {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .role-pill {
-    border-radius: 0;
-    padding: 5px 8px;
-    background: var(--gov-blue-dark);
-    color: var(--gov-white);
-    border: 0;
-    font-size: .75rem;
-    text-transform: uppercase;
-    letter-spacing: .04em;
-    font-weight: 700;
-  }
-
-  .speaker {
-    font-weight: 700;
-    color: var(--gov-black);
-  }
-
-  .topic {
-    color: var(--gov-blue-dark);
-    font-weight: 700;
-    font-size: .95rem;
-  }
-
-  .quote-short {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.12rem;
-    line-height: 1.55;
-    margin: 0;
-    color: var(--gov-black);
-    font-weight: 700;
-  }
-
-  .summary {
-    color: var(--gov-dark-grey);
-    line-height: 1.55;
-    margin: 0;
-    font-size: .97rem;
-  }
-
-  .view-btn {
-    margin-top: auto;
-    align-self: flex-start;
-    box-shadow: 0 2px 0 #002d18;
-    padding: 10px 14px;
-  }
-
-  .empty {
-    grid-column: 1 / -1;
-    border-radius: 0;
-    padding: 24px;
-    background: var(--gov-white);
-    border: 1px solid var(--gov-border);
-    border-left: 6px solid var(--gov-red);
-    box-shadow: var(--shadow);
-    color: var(--gov-black);
-    line-height: 1.65;
-  }
-
-  .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(11, 12, 12, .72);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    z-index: 1000;
-    backdrop-filter: none;
-  }
-
-  .modal {
-    width: min(820px, 100%);
-    max-height: min(88vh, 820px);
-    overflow: auto;
-    border-radius: 0;
-    padding: 24px;
-    background: var(--gov-white);
-    border: 0;
-    box-shadow: 0 8px 28px rgba(0,0,0,.35);
-  }
-
-  .modal h3 {
-    margin: 0 0 10px;
-    font-size: 1.45rem;
-    line-height: 1.25;
-    color: var(--gov-black);
-    font-weight: 700;
-  }
-
-  .modal p {
-    margin: 0;
-    color: var(--gov-dark-grey);
-    line-height: 1.6;
-  }
-
-  .context-image {
-    width: 100%;
-    max-height: 300px;
-    object-fit: cover;
-    border-radius: 0;
-    margin: 16px 0;
-    border: 1px solid var(--gov-border);
-    background: var(--gov-light-grey);
-  }
-
-  .full-quote-box,
-  .context-box,
-  .edexcel-box {
-    border-radius: 0;
-    padding: 16px;
-    background: var(--gov-light-grey);
-    border: 1px solid var(--gov-border);
-    border-left: 5px solid var(--gov-blue);
-    margin-top: 14px;
-    line-height: 1.65;
-  }
-
-  .full-quote-box {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.08rem;
-    color: var(--gov-black);
-    font-weight: 700;
-  }
-
-  .box-title {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: .82rem;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    color: var(--gov-blue-dark);
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-
-  .edexcel-list {
-    margin: 8px 0 0;
-    padding-left: 20px;
-    color: var(--gov-black);
-  }
-
-  .edexcel-list li {
-    margin-bottom: 7px;
-  }
-
-  .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-  }
-
-  .input {
-    width: 100%;
-    margin-top: 16px;
-    border-radius: 0;
-    border: 2px solid var(--gov-black);
-    background: var(--gov-white);
-    color: var(--gov-black);
-    padding: 12px 14px;
-    font: inherit;
-    line-height: 1.5;
-    outline: none;
-  }
-
-  .input:focus {
-    border-color: var(--gov-black);
-    box-shadow: 0 0 0 4px var(--gov-yellow);
-  }
-
-  .login-status {
-    margin-top: 12px;
-    min-height: 1.3em;
-    color: var(--gov-dark-grey);
-    font-size: .95rem;
-  }
-
-  .hidden {
-    display: none !important;
-  }
-
-  @media (max-width: 960px) {
-    .grid {
-      grid-template-columns: repeat(2, 1fr);
+    :root {
+      --gov-blue: #1d70b8;
+      --gov-blue-dark: #003078;
+      --gov-black: #0b0c0c;
+      --gov-white: #ffffff;
+      --gov-light-grey: #f3f2f1;
+      --gov-mid-grey: #b1b4b6;
+      --gov-dark-grey: #505a5f;
+      --gov-border: #b1b4b6;
+      --gov-yellow: #ffdd00;
+      --gov-green: #00703c;
+      --gov-red: #d4351c;
+      --text: #0b0c0c;
+      --muted: #505a5f;
+      --shadow: 0 2px 0 rgba(11, 12, 12, 0.12);
     }
 
-    .summary-grid {
-      grid-template-columns: 1fr;
+    * {
+      box-sizing: border-box;
     }
-  }
 
-  @media (max-width: 640px) {
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--gov-light-grey);
+    }
+
     .wrap {
-      width: min(100% - 24px, 1180px);
-    }
-
-    .hero-top {
-      width: min(100% - 24px, 1180px);
-    }
-
-    .grid {
-      grid-template-columns: 1fr;
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto 56px;
+      position: relative;
+      z-index: 1;
     }
 
     .hero {
-      padding: 28px 0 30px;
+      background: var(--gov-blue-dark);
+      color: var(--gov-white);
+      border: 0;
+      box-shadow: none;
+      border-radius: 0;
+      padding: 34px 0 38px;
+      margin: 0 calc(50% - 50vw) 28px;
+    }
+
+    .hero-top {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2.2rem, 4vw, 3.6rem);
+      line-height: 1.03;
+      letter-spacing: -0.03em;
+      color: var(--gov-white);
+      font-weight: 700;
+    }
+
+    .sub {
+      max-width: 860px;
+      margin: 0;
+      line-height: 1.55;
+      color: var(--gov-white);
+      font-size: 1.08rem;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .badge {
+      border-radius: 0;
+      background: var(--gov-white);
+      color: var(--gov-black);
+      border: 0;
+      border-left: 6px solid var(--gov-yellow);
+      padding: 9px 12px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      box-shadow: none;
     }
 
     .btns {
-      width: 100%;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     button {
+      border: 0;
+      border-radius: 0;
+      padding: 11px 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 0 #002d18;
+      transition: background .15s ease, transform .05s ease;
+    }
+
+    button:hover {
+      transform: none;
+    }
+
+    button:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .primary {
+      background: var(--gov-green);
+      color: var(--gov-white);
+      border: 2px solid transparent;
+    }
+
+    .primary:hover {
+      background: #005a30;
+    }
+
+    .secondary {
+      background: var(--gov-white);
+      color: var(--gov-blue);
+      border: 2px solid var(--gov-blue);
+      box-shadow: none;
+    }
+
+    .secondary:hover {
+      color: var(--gov-blue-dark);
+      border-color: var(--gov-blue-dark);
+    }
+
+    .status-box {
+      border-radius: 0;
+      padding: 16px 18px;
+      margin-bottom: 22px;
+      background: var(--gov-white);
+      border: 1px solid var(--gov-border);
+      border-left: 6px solid var(--gov-blue);
+      color: var(--gov-black);
+      box-shadow: var(--shadow);
+      line-height: 1.55;
+      font-weight: 400;
+    }
+
+    .source-link {
+      color: var(--gov-blue);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+      font-weight: 700;
+    }
+
+    .source-link:hover {
+      color: var(--gov-blue-dark);
+    }
+
+    .pmqs-summary-box {
+      border-radius: 0;
+      padding: 0;
+      margin-bottom: 26px;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .summary-panel {
+      border-radius: 0;
+      padding: 22px;
+      background: var(--gov-white);
+      border: 1px solid var(--gov-border);
+      border-top: 5px solid var(--gov-blue);
+      box-shadow: var(--shadow);
+    }
+
+    .pmqs-summary-box h2 {
+      margin: 0 0 12px;
+      font-size: 1.45rem;
+      line-height: 1.2;
+      color: var(--gov-black);
+      font-weight: 700;
+    }
+
+    .pmqs-summary-text {
+      color: var(--gov-black);
+      line-height: 1.65;
+      margin: 0;
+      max-width: 980px;
+    }
+
+    .opposition-question-list {
+      margin: 0;
+      padding-left: 22px;
+      color: var(--gov-black);
+      line-height: 1.6;
+    }
+
+    .opposition-question-list li {
+      margin-bottom: 9px;
+      padding-left: 4px;
+    }
+
+    .question-tag {
+      display: inline-block;
+      margin-right: 6px;
+      font-weight: 700;
+      color: var(--gov-blue-dark);
+    }
+
+    .question-link {
+      all: unset;
+      cursor: pointer;
+      color: var(--gov-blue);
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    .question-link:hover {
+      color: var(--gov-blue-dark);
+    }
+
+    .question-link:focus {
+      outline: 3px solid var(--gov-yellow);
+      outline-offset: 3px;
+      background: var(--gov-yellow);
+      color: var(--gov-black);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .quote-card {
+      border-radius: 0;
+      overflow: hidden;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: var(--gov-white);
+      border: 1px solid var(--gov-border);
+      border-top: 5px solid var(--gov-blue-dark);
+      box-shadow: var(--shadow);
+    }
+
+    .quote-image {
       width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      background: var(--gov-light-grey);
+      border-bottom: 1px solid var(--gov-border);
+      filter: saturate(0.95) contrast(1.02);
+    }
+
+    .quote-image-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: var(--gov-light-grey);
+      border-bottom: 1px solid var(--gov-border);
+      display: grid;
+      place-items: center;
+      font-size: 3rem;
+      color: var(--gov-dark-grey);
+    }
+
+    .quote-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .quote-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .role-pill {
+      border-radius: 0;
+      padding: 5px 8px;
+      background: var(--gov-blue-dark);
+      color: var(--gov-white);
+      border: 0;
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      font-weight: 700;
+    }
+
+    .speaker {
+      font-weight: 700;
+      color: var(--gov-black);
+    }
+
+    .topic {
+      color: var(--gov-blue-dark);
+      font-weight: 700;
+      font-size: .95rem;
+    }
+
+    .quote-short {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1.12rem;
+      line-height: 1.55;
+      margin: 0;
+      color: var(--gov-black);
+      font-weight: 700;
+    }
+
+    .summary {
+      color: var(--gov-dark-grey);
+      line-height: 1.55;
+      margin: 0;
+      font-size: .97rem;
+    }
+
+    .view-btn {
+      margin-top: auto;
+      align-self: flex-start;
+      box-shadow: 0 2px 0 #002d18;
+      padding: 10px 14px;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      border-radius: 0;
+      padding: 24px;
+      background: var(--gov-white);
+      border: 1px solid var(--gov-border);
+      border-left: 6px solid var(--gov-red);
+      box-shadow: var(--shadow);
+      color: var(--gov-black);
+      line-height: 1.65;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 12, 12, .72);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
     }
 
     .modal {
-      padding: 18px;
+      width: min(820px, 100%);
+      max-height: min(88vh, 820px);
+      overflow: auto;
+      border-radius: 0;
+      padding: 24px;
+      background: var(--gov-white);
+      border: 0;
+      box-shadow: 0 8px 28px rgba(0,0,0,.35);
     }
-  }
-</style>
+
+    .modal h3 {
+      margin: 0 0 10px;
+      font-size: 1.45rem;
+      line-height: 1.25;
+      color: var(--gov-black);
+      font-weight: 700;
+    }
+
+    .modal p {
+      margin: 0;
+      color: var(--gov-dark-grey);
+      line-height: 1.6;
+    }
+
+    .context-image {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 0;
+      margin: 16px 0;
+      border: 1px solid var(--gov-border);
+      background: var(--gov-light-grey);
+    }
+
+    .full-quote-box,
+    .context-box,
+    .edexcel-box {
+      border-radius: 0;
+      padding: 16px;
+      background: var(--gov-light-grey);
+      border: 1px solid var(--gov-border);
+      border-left: 5px solid var(--gov-blue);
+      margin-top: 14px;
+      line-height: 1.65;
+    }
+
+    .full-quote-box {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1.08rem;
+      color: var(--gov-black);
+      font-weight: 700;
+    }
+
+    .box-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--gov-blue-dark);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .edexcel-list {
+      margin: 8px 0 0;
+      padding-left: 20px;
+      color: var(--gov-black);
+    }
+
+    .edexcel-list li {
+      margin-bottom: 7px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .input {
+      width: 100%;
+      margin-top: 16px;
+      border-radius: 0;
+      border: 2px solid var(--gov-black);
+      background: var(--gov-white);
+      color: var(--gov-black);
+      padding: 12px 14px;
+      font: inherit;
+      line-height: 1.5;
+      outline: none;
+    }
+
+    .input:focus {
+      border-color: var(--gov-black);
+      box-shadow: 0 0 0 4px var(--gov-yellow);
+    }
+
+    .login-status {
+      margin-top: 12px;
+      min-height: 1.3em;
+      color: var(--gov-dark-grey);
+      font-size: .95rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 960px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .wrap {
+        width: min(100% - 24px, 1180px);
+      }
+
+      .hero-top {
+        width: min(100% - 24px, 1180px);
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 28px 0 30px;
+      }
+
+      .btns {
+        width: 100%;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .modal {
+        padding: 18px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -562,6 +572,27 @@
 
       <div class="modal-actions">
         <button class="secondary" id="closeContextBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="questionModal">
+    <div class="modal">
+      <h3 id="questionModalTitle">Opposition question</h3>
+      <p id="questionModalSubtitle">Full speech before the main question</p>
+
+      <div class="full-quote-box">
+        <div class="box-title">Main question</div>
+        <div id="questionMainText"></div>
+      </div>
+
+      <div class="context-box">
+        <div class="box-title">Full opposition speech</div>
+        <div id="questionFullSpeech"></div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="secondary" id="closeQuestionBtn">Close</button>
       </div>
     </div>
   </div>
@@ -620,6 +651,7 @@
     };
 
     let latestQuotes = [];
+    let latestOppositionQuestions = [];
 
     const loginModal = document.getElementById("loginModal");
     const passwordInput = document.getElementById("passwordInput");
@@ -644,6 +676,11 @@
     const modalFullQuote = document.getElementById("modalFullQuote");
     const modalContext = document.getElementById("modalContext");
     const modalEdexcelLinks = document.getElementById("modalEdexcelLinks");
+
+    const questionModal = document.getElementById("questionModal");
+    const closeQuestionBtn = document.getElementById("closeQuestionBtn");
+    const questionMainText = document.getElementById("questionMainText");
+    const questionFullSpeech = document.getElementById("questionFullSpeech");
 
     function getSavedPassword() {
       return localStorage.getItem(STORAGE_KEYS.sitePassword) || "";
@@ -842,15 +879,38 @@
           ? data.oppositionQuestions
           : buildFallbackOppositionQuestions(quotes);
 
-      oppositionQuestionsList.innerHTML = questions
-        .slice(0, 6)
+      latestOppositionQuestions = questions
+        .map((item) => {
+          if (typeof item === "string") {
+            return {
+              mainQuestion: shortenQuote(item, 160),
+              fullSpeech: item
+            };
+          }
+
+          return {
+            mainQuestion: item.mainQuestion || item.question || "Opposition question",
+            fullSpeech: item.fullSpeech || item.speech || item.mainQuestion || item.question || ""
+          };
+        })
+        .slice(0, 6);
+
+      oppositionQuestionsList.innerHTML = latestOppositionQuestions
         .map((question, index) => `
           <li>
-            <span class="question-tag">Q${index + 1}.</span>
-            ${escapeHtml(question)}
+            <button class="question-link" data-question-index="${index}">
+              <span class="question-tag">Q${index + 1}.</span>
+              ${escapeHtml(question.mainQuestion)}
+            </button>
           </li>
         `)
         .join("");
+
+      document.querySelectorAll(".question-link").forEach((button) => {
+        button.addEventListener("click", () => {
+          openQuestionModal(Number(button.dataset.questionIndex));
+        });
+      });
     }
 
     function buildFallbackPmqsSummary(quotes) {
@@ -879,21 +939,45 @@
       });
 
       const questions = oppositionQuotes
-        .map(q => q.fullQuote || q.quote || q.shortQuote || q.summary || "")
-        .filter(Boolean)
-        .map(q => q.replace(/\s+/g, " ").trim());
+        .map(q => {
+          const speech = q.fullQuote || q.quote || q.shortQuote || q.summary || "";
+          return {
+            mainQuestion: shortenQuote(speech, 160),
+            fullSpeech: speech
+          };
+        })
+        .filter(q => q.mainQuestion || q.fullSpeech)
+        .slice(0, 6);
 
       if (questions.length) {
-        return questions.slice(0, 6);
+        return questions;
       }
 
       return [
-        "The opposition challenged the Prime Minister on the government’s overall record.",
-        "The opposition pressed the Prime Minister on policy delivery and whether promises had been met.",
-        "The opposition asked whether the government was taking responsibility for current problems.",
-        "The opposition questioned the Prime Minister’s judgement and leadership.",
-        "The opposition tried to expose weaknesses in the government’s argument.",
-        "The opposition used PMQs to frame itself as an alternative government."
+        {
+          mainQuestion: "How can the Prime Minister defend the government’s record?",
+          fullSpeech: "The opposition challenged the Prime Minister on the government’s overall record."
+        },
+        {
+          mainQuestion: "Has the government delivered on its promises?",
+          fullSpeech: "The opposition pressed the Prime Minister on policy delivery and whether promises had been met."
+        },
+        {
+          mainQuestion: "Will the Prime Minister take responsibility for current problems?",
+          fullSpeech: "The opposition asked whether the government was taking responsibility for current problems."
+        },
+        {
+          mainQuestion: "Does this show poor judgement from the Prime Minister?",
+          fullSpeech: "The opposition questioned the Prime Minister’s judgement and leadership."
+        },
+        {
+          mainQuestion: "Why should the public trust the government’s argument?",
+          fullSpeech: "The opposition tried to expose weaknesses in the government’s argument."
+        },
+        {
+          mainQuestion: "Isn’t the opposition now offering the stronger alternative?",
+          fullSpeech: "The opposition used PMQs to frame itself as an alternative government."
+        }
       ];
     }
 
@@ -970,6 +1054,20 @@
       modalImage.src = "";
     }
 
+    function openQuestionModal(index) {
+      const question = latestOppositionQuestions[index];
+      if (!question) return;
+
+      questionMainText.textContent = question.mainQuestion || "Question unavailable.";
+      questionFullSpeech.textContent = question.fullSpeech || question.mainQuestion || "Full speech unavailable.";
+
+      questionModal.classList.remove("hidden");
+    }
+
+    function closeQuestionModal() {
+      questionModal.classList.add("hidden");
+    }
+
     function getFullQuote(quote) {
       return quote.fullQuote || quote.quote || quote.shortQuote || "Quote unavailable.";
     }
@@ -1042,13 +1140,21 @@
 
     refreshBtn.addEventListener("click", loadPmqs);
     closeContextBtn.addEventListener("click", closeContextModal);
+    closeQuestionBtn.addEventListener("click", closeQuestionModal);
 
     contextModal.addEventListener("click", (event) => {
       if (event.target === contextModal) closeContextModal();
     });
 
+    questionModal.addEventListener("click", (event) => {
+      if (event.target === questionModal) closeQuestionModal();
+    });
+
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") closeContextModal();
+      if (event.key === "Escape") {
+        closeContextModal();
+        closeQuestionModal();
+      }
     });
 
     boot();
