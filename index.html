@@ -224,7 +224,7 @@
     }
 
     .opposition-question-list li {
-      margin-bottom: 9px;
+      margin-bottom: 11px;
       padding-left: 4px;
     }
 
@@ -255,6 +255,15 @@
       outline-offset: 3px;
       background: var(--gov-yellow);
       color: var(--gov-black);
+    }
+
+    .question-hint {
+      display: block;
+      margin-top: 3px;
+      color: var(--gov-dark-grey);
+      font-size: 0.9rem;
+      font-weight: 400;
+      text-decoration: none;
     }
 
     .grid {
@@ -434,6 +443,10 @@
       font-size: 1.08rem;
       color: var(--gov-black);
       font-weight: 700;
+    }
+
+    .context-box {
+      white-space: pre-wrap;
     }
 
     .box-title {
@@ -881,18 +894,33 @@
 
       latestOppositionQuestions = questions
         .map((item) => {
+          let mainQuestion = "";
+          let fullSpeech = "";
+
           if (typeof item === "string") {
-            return {
-              mainQuestion: shortenQuote(item, 160),
-              fullSpeech: item
-            };
+            fullSpeech = item;
+            mainQuestion = condenseToMainQuestion("", item);
+          } else {
+            fullSpeech =
+              item.fullSpeech ||
+              item.speech ||
+              item.fullContribution ||
+              item.question ||
+              item.mainQuestion ||
+              "";
+
+            mainQuestion = condenseToMainQuestion(
+              item.mainQuestion || item.question || "",
+              fullSpeech
+            );
           }
 
           return {
-            mainQuestion: item.mainQuestion || item.question || "Opposition question",
-            fullSpeech: item.fullSpeech || item.speech || item.mainQuestion || item.question || ""
+            mainQuestion,
+            fullSpeech: fullSpeech || mainQuestion
           };
         })
+        .filter((item) => item.mainQuestion || item.fullSpeech)
         .slice(0, 6);
 
       oppositionQuestionsList.innerHTML = latestOppositionQuestions
@@ -901,6 +929,7 @@
             <button class="question-link" data-question-index="${index}">
               <span class="question-tag">Q${index + 1}.</span>
               ${escapeHtml(question.mainQuestion)}
+              <span class="question-hint">View full speech</span>
             </button>
           </li>
         `)
@@ -942,7 +971,7 @@
         .map(q => {
           const speech = q.fullQuote || q.quote || q.shortQuote || q.summary || "";
           return {
-            mainQuestion: shortenQuote(speech, 160),
+            mainQuestion: condenseToMainQuestion("", speech),
             fullSpeech: speech
           };
         })
@@ -1091,8 +1120,112 @@
       ];
     }
 
+    function condenseToMainQuestion(rawMain, fullSpeech) {
+      const candidate = cleanOneLine(rawMain || "");
+      const speech = cleanOneLine(fullSpeech || candidate);
+
+      const extractedFromSpeech = extractMainQuestion(speech);
+      const extractedFromCandidate = extractMainQuestion(candidate);
+
+      let chosen = extractedFromSpeech || extractedFromCandidate || candidate || speech;
+
+      chosen = cleanOneLine(chosen)
+        .replace(/^and\s+/i, "")
+        .replace(/^so\s+/i, "")
+        .replace(/^therefore\s+/i, "")
+        .replace(/^can I ask the Prime Minister[:,]?\s*/i, "")
+        .replace(/^may I ask the Prime Minister[:,]?\s*/i, "")
+        .replace(/^will the Prime Minister tell the House[:,]?\s*/i, "Will the Prime Minister tell the House ")
+        .replace(/^does the Prime Minister agree with me that[:,]?\s*/i, "Does the Prime Minister agree that ");
+
+      if (!chosen.endsWith("?")) {
+        const questionWords = /^(why|how|what|when|where|who|which|will|would|could|can|does|do|did|is|are|was|were|has|have|should)\b/i;
+
+        if (questionWords.test(chosen)) {
+          chosen += "?";
+        }
+      }
+
+      return shortenMainQuestion(chosen, 140);
+    }
+
+    function extractMainQuestion(text) {
+      const clean = cleanOneLine(text);
+      if (!clean) return "";
+
+      const questionMatches = clean.match(/[^.?!;:]*\?/g);
+
+      if (questionMatches && questionMatches.length) {
+        return cleanOneLine(questionMatches[questionMatches.length - 1]);
+      }
+
+      const directQuestionPatterns = [
+        /\b(will the Prime Minister[^.?!]*[.?!]?)/i,
+        /\b(can the Prime Minister[^.?!]*[.?!]?)/i,
+        /\b(could the Prime Minister[^.?!]*[.?!]?)/i,
+        /\b(does the Prime Minister[^.?!]*[.?!]?)/i,
+        /\b(is the Prime Minister[^.?!]*[.?!]?)/i,
+        /\b(why does the Prime Minister[^.?!]*[.?!]?)/i,
+        /\b(how can the Prime Minister[^.?!]*[.?!]?)/i,
+        /\b(what does the Prime Minister[^.?!]*[.?!]?)/i,
+        /\b(when will the Prime Minister[^.?!]*[.?!]?)/i,
+        /\b(will he[^.?!]*[.?!]?)/i,
+        /\b(will she[^.?!]*[.?!]?)/i,
+        /\b(does he[^.?!]*[.?!]?)/i,
+        /\b(does she[^.?!]*[.?!]?)/i,
+        /\b(why has he[^.?!]*[.?!]?)/i,
+        /\b(why has she[^.?!]*[.?!]?)/i
+      ];
+
+      for (const pattern of directQuestionPatterns) {
+        const match = clean.match(pattern);
+        if (match && match[1]) {
+          return cleanOneLine(match[1]);
+        }
+      }
+
+      const sentences = clean
+        .split(/(?<=[.!?])\s+/)
+        .map(cleanOneLine)
+        .filter(Boolean);
+
+      if (sentences.length) {
+        const lastSentence = sentences[sentences.length - 1];
+
+        if (lastSentence.length <= 180) {
+          return lastSentence;
+        }
+
+        const lastClause = lastSentence.split(/[,;:]\s+/).pop();
+        return cleanOneLine(lastClause || lastSentence);
+      }
+
+      return clean;
+    }
+
+    function shortenMainQuestion(text, maxLength) {
+      const clean = cleanOneLine(text);
+
+      if (clean.length <= maxLength) return clean;
+
+      const questionStart = clean.search(/\b(why|how|what|when|where|who|which|will|would|could|can|does|do|did|is|are|was|were|has|have|should)\b/i);
+
+      let shortened = questionStart > 0 ? clean.slice(questionStart) : clean;
+
+      if (shortened.length <= maxLength) return cleanOneLine(shortened);
+
+      const sliced = shortened.slice(0, maxLength);
+      const lastSpace = sliced.lastIndexOf(" ");
+
+      shortened = lastSpace > 50 ? sliced.slice(0, lastSpace) : sliced;
+
+      if (!shortened.endsWith("?")) shortened += "...";
+
+      return cleanOneLine(shortened);
+    }
+
     function shortenQuote(text, maxLength) {
-      const clean = String(text || "").replace(/\s+/g, " ").trim();
+      const clean = cleanOneLine(text);
 
       if (clean.length <= maxLength) return clean;
 
@@ -1104,6 +1237,12 @@
       }
 
       return sliced + "...";
+    }
+
+    function cleanOneLine(value) {
+      return String(value || "")
+        .replace(/\s+/g, " ")
+        .trim();
     }
 
     function formatDate(iso) {
