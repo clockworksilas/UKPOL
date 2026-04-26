@@ -42,6 +42,28 @@
       z-index: 1;
     }
 
+    .site-nav {
+      display: flex;
+      gap: 0;
+      margin: 22px 0 0;
+      border-bottom: 1px solid var(--gov-border);
+      background: var(--gov-white);
+    }
+
+    .nav-tab {
+      background: var(--gov-light-grey);
+      color: var(--gov-blue);
+      border: 1px solid var(--gov-border);
+      border-bottom: 0;
+      box-shadow: none;
+      margin-right: 4px;
+    }
+
+    .nav-tab.active {
+      background: var(--gov-blue-dark);
+      color: var(--gov-white);
+    }
+
     .hero {
       background: var(--gov-blue-dark);
       color: var(--gov-white);
@@ -152,28 +174,6 @@
       border-color: var(--gov-blue-dark);
     }
 
-    .site-nav {
-      display: flex;
-      gap: 0;
-      margin: 22px 0 0;
-      border-bottom: 1px solid var(--gov-border);
-      background: var(--gov-white);
-    }
-
-    .nav-tab {
-      background: var(--gov-light-grey);
-      color: var(--gov-blue);
-      border: 1px solid var(--gov-border);
-      border-bottom: 0;
-      box-shadow: none;
-      margin-right: 4px;
-    }
-
-    .nav-tab.active {
-      background: var(--gov-blue-dark);
-      color: var(--gov-white);
-    }
-
     .status-box {
       border-radius: 0;
       padding: 16px 18px;
@@ -223,7 +223,8 @@
       box-shadow: var(--shadow);
     }
 
-    .pmqs-summary-box h2 {
+    .pmqs-summary-box h2,
+    .summary-panel h2 {
       margin: 0 0 12px;
       font-size: 1.45rem;
       line-height: 1.2;
@@ -446,76 +447,44 @@
       font-size: 0.95rem;
     }
 
-    .polls-page {
-      margin-top: 28px;
-    }
-
-    .polls-header {
-      background: var(--gov-white);
-      border: 1px solid var(--gov-border);
-      border-top: 5px solid var(--gov-blue-dark);
-      box-shadow: var(--shadow);
-      padding: 22px;
-      margin-bottom: 22px;
-    }
-
-    .polls-header h2 {
-      margin: 0 0 10px;
-      font-size: 1.7rem;
-      color: var(--gov-black);
-    }
-
-    .polls-meta {
-      color: var(--gov-dark-grey);
-      line-height: 1.6;
-      margin: 0 0 14px;
-    }
-
-    .poll-chart {
-      background: var(--gov-white);
-      border: 1px solid var(--gov-border);
-      border-top: 5px solid var(--gov-blue);
-      box-shadow: var(--shadow);
-      padding: 22px;
-    }
-
     .poll-bar-row {
       display: grid;
-      grid-template-columns: 170px 1fr 58px;
-      gap: 14px;
+      grid-template-columns: 210px 1fr 80px;
+      gap: 16px;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .poll-party {
       font-weight: 700;
       color: var(--gov-black);
+      font-size: 1rem;
     }
 
     .poll-track {
+      width: 100%;
+      height: 28px;
       background: var(--gov-light-grey);
       border: 1px solid var(--gov-border);
-      height: 30px;
-      position: relative;
+      overflow: hidden;
     }
 
     .poll-fill {
       height: 100%;
-      background: var(--gov-blue);
       min-width: 3px;
     }
 
     .poll-percent {
+      text-align: right;
       font-weight: 700;
       color: var(--gov-black);
-      text-align: right;
+      font-size: 1rem;
     }
 
     .poll-note {
-      margin-top: 16px;
+      margin-top: 18px;
       color: var(--gov-dark-grey);
       line-height: 1.6;
-      font-size: 0.95rem;
     }
 
     .empty {
@@ -716,7 +685,7 @@
 
       .poll-bar-row {
         grid-template-columns: 1fr;
-        gap: 6px;
+        gap: 8px;
       }
 
       .poll-percent {
@@ -854,25 +823,43 @@
       </section>
     </section>
 
-    <section class="page-view polls-page hidden" id="pollsPage">
-      <section class="polls-header">
-        <h2>Current UK polls</h2>
-        <p class="polls-meta" id="pollsMeta">
-          Click refresh to load the latest UK voting intention figures.
-        </p>
+    <section class="page-view hidden" id="pollsPage">
+      <section class="hero" id="pollsHero">
+        <div class="hero-top">
+          <div>
+            <h1>Current UK polls</h1>
+            <p class="sub">
+              Latest national UK voting intention poll shown as party vote share percentages.
+              This uses the most recent national poll from the opinion polling page.
+            </p>
 
-        <div class="btns">
-          <button class="primary" id="refreshPollsBtn">Refresh UK polls</button>
+            <div class="badge-row">
+              <div class="badge" id="pollDateBadge">Fieldwork loading...</div>
+              <div class="badge" id="pollSourceBadge">Source loading...</div>
+              <div class="badge" id="pollLeadBadge">Lead loading...</div>
+            </div>
+          </div>
+
+          <div class="btns">
+            <button class="primary" id="refreshPollsBtn">Refresh UK polls</button>
+          </div>
         </div>
       </section>
 
       <div class="status-box" id="pollsStatusBox">
-        Polling data has not loaded yet.
+        Loading UK polls...
       </div>
 
-      <section class="poll-chart" id="pollChart">
-        <div class="empty">
-          Open this tab to load the latest UK voting intention bar chart.
+      <section class="word-counter-box" id="pollsChartBox">
+        <h2>Latest national voting intention poll</h2>
+        <p class="word-counter-intro" id="pollsMeta">
+          Loading poll details...
+        </p>
+
+        <div id="pollChart">
+          <div class="empty">
+            Open this tab to load the latest UK voting intention bar chart.
+          </div>
         </div>
       </section>
     </section>
@@ -924,6 +911,9 @@
     const pollsStatusBox = document.getElementById("pollsStatusBox");
     const pollsMeta = document.getElementById("pollsMeta");
     const pollChart = document.getElementById("pollChart");
+    const pollDateBadge = document.getElementById("pollDateBadge");
+    const pollSourceBadge = document.getElementById("pollSourceBadge");
+    const pollLeadBadge = document.getElementById("pollLeadBadge");
 
     function getSavedPassword() {
       return localStorage.getItem(STORAGE_KEYS.sitePassword) || "";
@@ -1114,6 +1104,7 @@
       refreshPollsBtn.disabled = true;
       refreshPollsBtn.textContent = "Loading...";
       pollsStatusBox.textContent = "Loading latest UK polling data...";
+      pollsMeta.textContent = "Loading poll details...";
       pollChart.innerHTML = `
         <div class="empty">
           Loading chart...
@@ -1126,6 +1117,7 @@
         renderUkPolls(data);
       } catch (error) {
         pollsStatusBox.textContent = error.message || "Could not load UK polls.";
+        pollsMeta.textContent = "Could not load poll details.";
 
         pollChart.innerHTML = `
           <div class="empty">
@@ -1133,6 +1125,10 @@
             ${escapeHtml(error.message || "Unknown error")}
           </div>
         `;
+
+        pollDateBadge.textContent = "Fieldwork unavailable";
+        pollSourceBadge.textContent = "Source unavailable";
+        pollLeadBadge.textContent = "Lead unavailable";
 
         if ((error.message || "").toLowerCase().includes("unauthorized")) {
           loginModal.classList.remove("hidden");
@@ -1145,119 +1141,94 @@
     }
 
     function renderUkPolls(data) {
-  const rawParties = Array.isArray(data.parties) ? data.parties : [];
-  const parties = normalizePollParties(rawParties);
+      const parties = Array.isArray(data.parties) ? data.parties : [];
+      const sorted = [...parties].sort((a, b) => Number(b.percentage) - Number(a.percentage));
+      const leader = sorted[0];
+      const second = sorted[1];
+      const leadAmount = leader && second ? Number(leader.percentage) - Number(second.percentage) : null;
 
-  pollsMeta.innerHTML = `
-    <strong>${escapeHtml(data.headline || "Latest UK voting intention poll")}</strong><br>
-    Pollster: ${escapeHtml(data.pollster || "Unknown")}
-    ${data.client ? ` · Client: ${escapeHtml(data.client)}` : ""}
-    ${data.area ? ` · Area: ${escapeHtml(data.area)}` : ""}
-    ${data.sampleSize ? ` · Sample: ${escapeHtml(data.sampleSize)}` : ""}
-    ${data.fieldworkDate ? ` · Fieldwork: ${escapeHtml(data.fieldworkDate)}` : ""}
-    ${data.publicationDate ? ` · Published: ${escapeHtml(data.publicationDate)}` : ""}
-  `;
+      pollDateBadge.textContent = data.fieldworkDate
+        ? `Fieldwork: ${data.fieldworkDate}`
+        : "Fieldwork unavailable";
 
-  const sourceLink = data.sourceUrl
-    ? `<a class="source-link" href="${escapeAttr(data.sourceUrl)}" target="_blank" rel="noopener">Open polling source</a>`
-    : "";
+      pollSourceBadge.textContent = data.pollster
+        ? `Pollster: ${data.pollster}`
+        : "Pollster unavailable";
 
-  pollsStatusBox.innerHTML = `
-    ${escapeHtml(data.summary || "This chart shows the latest extracted UK voting intention figures.")}
-    ${sourceLink ? "<br>" + sourceLink : ""}
-  `;
+      pollLeadBadge.textContent =
+        leader && second
+          ? `${leader.party} lead: ${leadAmount} point${leadAmount === 1 ? "" : "s"}`
+          : "Lead unavailable";
 
-  if (!parties.length) {
-    pollChart.innerHTML = `
-      <div class="empty">
-        No party polling percentages came back from the Worker.
-      </div>
-    `;
-    return;
-  }
+      pollsMeta.innerHTML = `
+        <strong>${escapeHtml(data.headline || "Latest UK voting intention poll")}</strong><br>
+        Pollster: ${escapeHtml(data.pollster || "Unknown")}
+        ${data.client ? ` · Client: ${escapeHtml(data.client)}` : ""}
+        ${data.area ? ` · Area: ${escapeHtml(data.area)}` : ""}
+        ${data.sampleSize ? ` · Sample: ${escapeHtml(data.sampleSize)}` : ""}
+        ${data.fieldworkDate ? ` · Fieldwork: ${escapeHtml(data.fieldworkDate)}` : ""}
+      `;
 
-  pollChart.innerHTML = `
-    ${parties.map(pollBarHtml).join("")}
+      const sourceLink = data.sourceUrl
+        ? `<a class="source-link" href="${escapeAttr(data.sourceUrl)}" target="_blank" rel="noopener">Open polling source</a>`
+        : "";
 
-    <p class="poll-note">
-      These figures are voting intention percentages from the latest extracted poll, not a seat forecast,
-      not a prediction of the election result, and not an endorsement of any party.
-    </p>
-  `;
-}
+      pollsStatusBox.innerHTML = `
+        ${escapeHtml(
+          data.summary ||
+          "This chart shows the most recent national UK voting intention poll from the National poll results table."
+        )}
+        ${sourceLink ? "<br>" + sourceLink : ""}
+      `;
 
-function pollBarHtml(item) {
-  const party = item.party || item.shortName || "Party";
-  const percentage = Math.max(0, Math.min(100, Number(item.percentage) || 0));
-  const color = item.color || getPartyColor(party);
-
-  return `
-    <div class="poll-bar-row">
-      <div class="poll-party">${escapeHtml(party)}</div>
-      <div class="poll-track" aria-label="${escapeAttr(party)} ${percentage}%">
-        <div class="poll-fill" style="width: ${percentage}%; background: ${color};"></div>
-      </div>
-      <div class="poll-percent">${percentage}%</div>
-    </div>
-  `;
-}
-
-function normalizePollParties(rawParties) {
-  const canonicalOrder = [
-    { key: "Labour", aliases: ["labour", "lab"] },
-    { key: "Conservative", aliases: ["conservative", "conservatives", "con"] },
-    { key: "Reform UK", aliases: ["reform", "reform uk", "ref uk", "reform party"] },
-    { key: "Liberal Democrats", aliases: ["liberal democrats", "liberal democrat", "lib dems", "lib dem"] },
-    { key: "Green", aliases: ["green", "green party"] },
-    { key: "SNP", aliases: ["snp", "scottish national party"] },
-    { key: "Plaid Cymru", aliases: ["plaid cymru", "plaid"] },
-    { key: "Other", aliases: ["other", "others"] }
-  ];
-
-  const found = new Map();
-
-  for (const item of rawParties) {
-    const rawName = String(item.party || item.shortName || "").trim().toLowerCase();
-    const percentage = Math.max(0, Math.min(100, Number(item.percentage) || 0));
-
-    for (const party of canonicalOrder) {
-      if (party.aliases.includes(rawName)) {
-        found.set(party.key, {
-          party: party.key,
-          shortName: item.shortName || party.key,
-          percentage
-        });
-        break;
+      if (!parties.length) {
+        pollChart.innerHTML = `
+          <div class="empty">
+            No party polling percentages came back from the Worker.
+          </div>
+        `;
+        return;
       }
+
+      pollChart.innerHTML = `
+        ${sorted.map(pollBarHtml).join("")}
+        <p class="poll-note">
+          These figures are voting intention percentages from the latest extracted poll, not a seat forecast,
+          not a prediction of the election result, and not an endorsement of any party.
+        </p>
+      `;
     }
-  }
 
-  const normalized = canonicalOrder
-    .map((party) => found.get(party.key))
-    .filter(Boolean);
+    function pollBarHtml(item) {
+      const party = item.party || item.shortName || "Party";
+      const percentage = Math.max(0, Math.min(100, Number(item.percentage) || 0));
+      const color = item.color || getPartyColor(party);
 
-  // If Reform didn't come through but you still want it visible, uncomment this:
-  // if (!found.has("Reform UK")) {
-  //   normalized.push({ party: "Reform UK", shortName: "Reform", percentage: 0 });
-  // }
+      return `
+        <div class="poll-bar-row">
+          <div class="poll-party">${escapeHtml(party)}</div>
+          <div class="poll-track" aria-label="${escapeAttr(party)} ${percentage}%">
+            <div class="poll-fill" style="width: ${percentage}%; background: ${color};"></div>
+          </div>
+          <div class="poll-percent">${percentage}%</div>
+        </div>
+      `;
+    }
 
-  return normalized.sort((a, b) => b.percentage - a.percentage);
-}
+    function getPartyColor(partyName) {
+      const name = String(partyName || "").toLowerCase();
 
-function getPartyColor(partyName) {
-  const name = String(partyName || "").toLowerCase();
+      if (name.includes("labour")) return "#E4003B";
+      if (name.includes("conservative")) return "#0087DC";
+      if (name.includes("reform")) return "#12B6CF";
+      if (name.includes("liberal democrat")) return "#FAA61A";
+      if (name.includes("green")) return "#6AB023";
+      if (name.includes("snp")) return "#FDF38E";
+      if (name.includes("plaid")) return "#008142";
+      if (name.includes("other")) return "#6F777B";
 
-  if (name.includes("labour")) return "#E4003B";
-  if (name.includes("conservative")) return "#0087DC";
-  if (name.includes("reform")) return "#12B6CF";
-  if (name.includes("liberal democrat")) return "#FAA61A";
-  if (name === "green" || name.includes("green")) return "#6AB023";
-  if (name.includes("snp")) return "#FDF38E";
-  if (name.includes("plaid")) return "#008142";
-  if (name.includes("other")) return "#6f777b";
-
-  return "#1d70b8";
-}
+      return "#1D70B8";
+    }
 
     function renderPmqs(data) {
       const quotes = Array.isArray(data.quotes) ? data.quotes : [];
