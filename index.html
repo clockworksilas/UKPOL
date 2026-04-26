@@ -152,6 +152,28 @@
       border-color: var(--gov-blue-dark);
     }
 
+    .site-nav {
+      display: flex;
+      gap: 0;
+      margin: 22px 0 0;
+      border-bottom: 1px solid var(--gov-border);
+      background: var(--gov-white);
+    }
+
+    .nav-tab {
+      background: var(--gov-light-grey);
+      color: var(--gov-blue);
+      border: 1px solid var(--gov-border);
+      border-bottom: 0;
+      box-shadow: none;
+      margin-right: 4px;
+    }
+
+    .nav-tab.active {
+      background: var(--gov-blue-dark);
+      color: var(--gov-white);
+    }
+
     .status-box {
       border-radius: 0;
       padding: 16px 18px;
@@ -424,6 +446,78 @@
       font-size: 0.95rem;
     }
 
+    .polls-page {
+      margin-top: 28px;
+    }
+
+    .polls-header {
+      background: var(--gov-white);
+      border: 1px solid var(--gov-border);
+      border-top: 5px solid var(--gov-blue-dark);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .polls-header h2 {
+      margin: 0 0 10px;
+      font-size: 1.7rem;
+      color: var(--gov-black);
+    }
+
+    .polls-meta {
+      color: var(--gov-dark-grey);
+      line-height: 1.6;
+      margin: 0 0 14px;
+    }
+
+    .poll-chart {
+      background: var(--gov-white);
+      border: 1px solid var(--gov-border);
+      border-top: 5px solid var(--gov-blue);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .poll-bar-row {
+      display: grid;
+      grid-template-columns: 170px 1fr 58px;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .poll-party {
+      font-weight: 700;
+      color: var(--gov-black);
+    }
+
+    .poll-track {
+      background: var(--gov-light-grey);
+      border: 1px solid var(--gov-border);
+      height: 30px;
+      position: relative;
+    }
+
+    .poll-fill {
+      height: 100%;
+      background: var(--gov-blue);
+      min-width: 3px;
+    }
+
+    .poll-percent {
+      font-weight: 700;
+      color: var(--gov-black);
+      text-align: right;
+    }
+
+    .poll-note {
+      margin-top: 16px;
+      color: var(--gov-dark-grey);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
     .empty {
       grid-column: 1 / -1;
       border-radius: 0;
@@ -608,6 +702,26 @@
       .modal {
         padding: 18px;
       }
+
+      .site-nav {
+        flex-direction: column;
+        border-bottom: 0;
+      }
+
+      .nav-tab {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 6px;
+      }
+
+      .poll-bar-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      .poll-percent {
+        text-align: left;
+      }
     }
   </style>
 </head>
@@ -675,62 +789,92 @@
   </div>
 
   <main class="wrap hidden" id="appWrap">
-    <section class="hero">
-      <div class="hero-top">
-        <div>
-          <h1>Latest PMQs</h1>
-          <p class="sub">
-            Short quote cards from Prime Minister’s Questions. Click each card to see the full quote,
-            what it means in context, and how it links to Edexcel A-Level Politics.
-          </p>
+    <nav class="site-nav" aria-label="Main pages">
+      <button class="nav-tab active" data-page="pmqsPage">Latest PMQs</button>
+      <button class="nav-tab" data-page="pollsPage">Current UK polls</button>
+    </nav>
 
-          <div class="badge-row">
-            <div class="badge" id="dateBadge">Date loading...</div>
-            <div class="badge" id="sourceBadge">Source loading...</div>
-            <div class="badge" id="quoteCountBadge">Quotes loading...</div>
+    <section class="page-view" id="pmqsPage">
+      <section class="hero">
+        <div class="hero-top">
+          <div>
+            <h1>Latest PMQs</h1>
+            <p class="sub">
+              Short quote cards from Prime Minister’s Questions. Click each card to see the full quote,
+              what it means in context, and how it links to Edexcel A-Level Politics.
+            </p>
+
+            <div class="badge-row">
+              <div class="badge" id="dateBadge">Date loading...</div>
+              <div class="badge" id="sourceBadge">Source loading...</div>
+              <div class="badge" id="quoteCountBadge">Quotes loading...</div>
+            </div>
+          </div>
+
+          <div class="btns">
+            <button class="secondary" id="refreshBtn">Refresh PMQs</button>
           </div>
         </div>
+      </section>
+
+      <div class="status-box" id="statusBox">Loading PMQs...</div>
+
+      <section class="pmqs-summary-box" id="pmqsSummaryBox">
+        <div class="summary-grid">
+          <div class="summary-panel">
+            <h2>What happened in the latest PMQs?</h2>
+            <p class="pmqs-summary-text" id="pmqsSummaryText">
+              Loading the main PMQs summary...
+            </p>
+          </div>
+
+          <div class="summary-panel">
+            <h2>Six opposition questions</h2>
+            <ol class="opposition-question-list" id="oppositionQuestionsList">
+              <li>Loading opposition questions...</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid" id="quoteGrid"></section>
+
+      <section class="word-counter-box" id="wordCounterBox">
+        <h2>Most repeated words in this PMQs</h2>
+        <p class="word-counter-intro">
+          The top five repeated meaningful words from the latest PMQs exchange.
+        </p>
+        <div class="word-list" id="topWordsList">
+          <div class="word-item">
+            <span class="word-rank">Loading</span>
+            <span class="word-text">...</span>
+            <span class="word-count">Counting words</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="page-view polls-page hidden" id="pollsPage">
+      <section class="polls-header">
+        <h2>Current UK polls</h2>
+        <p class="polls-meta" id="pollsMeta">
+          Click refresh to load the latest UK voting intention figures.
+        </p>
 
         <div class="btns">
-          <button class="secondary" id="refreshBtn">Refresh PMQs</button>
+          <button class="primary" id="refreshPollsBtn">Refresh UK polls</button>
         </div>
+      </section>
+
+      <div class="status-box" id="pollsStatusBox">
+        Polling data has not loaded yet.
       </div>
-    </section>
 
-    <div class="status-box" id="statusBox">Loading PMQs...</div>
-
-    <section class="pmqs-summary-box" id="pmqsSummaryBox">
-      <div class="summary-grid">
-        <div class="summary-panel">
-          <h2>What happened in the latest PMQs?</h2>
-          <p class="pmqs-summary-text" id="pmqsSummaryText">
-            Loading the main PMQs summary...
-          </p>
+      <section class="poll-chart" id="pollChart">
+        <div class="empty">
+          Open this tab to load the latest UK voting intention bar chart.
         </div>
-
-        <div class="summary-panel">
-          <h2>Six opposition questions</h2>
-          <ol class="opposition-question-list" id="oppositionQuestionsList">
-            <li>Loading opposition questions...</li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <section class="grid" id="quoteGrid"></section>
-
-    <section class="word-counter-box" id="wordCounterBox">
-      <h2>Most repeated words in this PMQs</h2>
-      <p class="word-counter-intro">
-        The top five repeated meaningful words from the latest PMQs exchange.
-      </p>
-      <div class="word-list" id="topWordsList">
-        <div class="word-item">
-          <span class="word-rank">Loading</span>
-          <span class="word-text">...</span>
-          <span class="word-count">Counting words</span>
-        </div>
-      </div>
+      </section>
     </section>
   </main>
 
@@ -743,6 +887,7 @@
 
     let latestQuotes = [];
     let latestOppositionQuestions = [];
+    let latestPollsLoaded = false;
 
     const loginModal = document.getElementById("loginModal");
     const passwordInput = document.getElementById("passwordInput");
@@ -773,6 +918,12 @@
     const closeQuestionBtn = document.getElementById("closeQuestionBtn");
     const questionMainText = document.getElementById("questionMainText");
     const questionFullSpeech = document.getElementById("questionFullSpeech");
+
+    const pageButtons = document.querySelectorAll(".nav-tab");
+    const refreshPollsBtn = document.getElementById("refreshPollsBtn");
+    const pollsStatusBox = document.getElementById("pollsStatusBox");
+    const pollsMeta = document.getElementById("pollsMeta");
+    const pollChart = document.getElementById("pollChart");
 
     function getSavedPassword() {
       return localStorage.getItem(STORAGE_KEYS.sitePassword) || "";
@@ -817,6 +968,29 @@
       if (!response.ok || data.ok === false) {
         if (response.status === 401) clearSavedPassword();
         throw new Error(data.detail || data.error || `PMQs request failed: ${response.status}`);
+      }
+
+      return data.result || data;
+    }
+
+    async function fetchLatestUkPolls() {
+      const password = getSavedPassword();
+
+      if (!password) {
+        throw new Error("No saved password. Please log in again.");
+      }
+
+      const response = await fetch(`${WORKER_BASE_URL}/api/uk-polls`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ password })
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || data.ok === false) {
+        if (response.status === 401) clearSavedPassword();
+        throw new Error(data.detail || data.error || `UK polls request failed: ${response.status}`);
       }
 
       return data.result || data;
@@ -875,6 +1049,20 @@
       loginStatus.textContent = "Saved password failed. Enter it again.";
     }
 
+    function showPage(pageId) {
+      document.querySelectorAll(".page-view").forEach((page) => {
+        page.classList.toggle("hidden", page.id !== pageId);
+      });
+
+      pageButtons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.page === pageId);
+      });
+
+      if (pageId === "pollsPage" && !latestPollsLoaded) {
+        loadUkPolls();
+      }
+    }
+
     async function loadPmqs() {
       refreshBtn.disabled = true;
       refreshBtn.textContent = "Loading...";
@@ -920,6 +1108,98 @@
         refreshBtn.disabled = false;
         refreshBtn.textContent = "Refresh PMQs";
       }
+    }
+
+    async function loadUkPolls() {
+      refreshPollsBtn.disabled = true;
+      refreshPollsBtn.textContent = "Loading...";
+      pollsStatusBox.textContent = "Loading latest UK polling data...";
+      pollChart.innerHTML = `
+        <div class="empty">
+          Loading chart...
+        </div>
+      `;
+
+      try {
+        const data = await fetchLatestUkPolls();
+        latestPollsLoaded = true;
+        renderUkPolls(data);
+      } catch (error) {
+        pollsStatusBox.textContent = error.message || "Could not load UK polls.";
+
+        pollChart.innerHTML = `
+          <div class="empty">
+            <strong>Could not load UK polls.</strong><br>
+            ${escapeHtml(error.message || "Unknown error")}
+          </div>
+        `;
+
+        if ((error.message || "").toLowerCase().includes("unauthorized")) {
+          loginModal.classList.remove("hidden");
+          appWrap.classList.add("hidden");
+        }
+      } finally {
+        refreshPollsBtn.disabled = false;
+        refreshPollsBtn.textContent = "Refresh UK polls";
+      }
+    }
+
+    function renderUkPolls(data) {
+      const parties = Array.isArray(data.parties) ? data.parties : [];
+
+      pollsMeta.innerHTML = `
+        <strong>${escapeHtml(data.headline || "Latest UK voting intention poll")}</strong><br>
+        Pollster: ${escapeHtml(data.pollster || "Unknown")}
+        ${data.client ? ` · Client: ${escapeHtml(data.client)}` : ""}
+        ${data.area ? ` · Area: ${escapeHtml(data.area)}` : ""}
+        ${data.sampleSize ? ` · Sample: ${escapeHtml(data.sampleSize)}` : ""}
+        ${data.fieldworkDate ? ` · Fieldwork: ${escapeHtml(data.fieldworkDate)}` : ""}
+        ${data.publicationDate ? ` · Published: ${escapeHtml(data.publicationDate)}` : ""}
+      `;
+
+      const sourceLink = data.sourceUrl
+        ? `<a class="source-link" href="${escapeAttr(data.sourceUrl)}" target="_blank" rel="noopener">Open polling source</a>`
+        : "";
+
+      pollsStatusBox.innerHTML = `
+        ${escapeHtml(data.summary || "This chart shows the latest extracted UK voting intention figures.")}
+        ${sourceLink ? "<br>" + sourceLink : ""}
+      `;
+
+      if (!parties.length) {
+        pollChart.innerHTML = `
+          <div class="empty">
+            No party polling percentages came back from the Worker.
+          </div>
+        `;
+        return;
+      }
+
+      const sortedParties = [...parties].sort((a, b) => Number(b.percentage) - Number(a.percentage));
+
+      pollChart.innerHTML = `
+        ${sortedParties.map(pollBarHtml).join("")}
+
+        <p class="poll-note">
+          These figures are voting intention percentages from the latest extracted poll, not a seat forecast,
+          not a prediction of the election result, and not an endorsement of any party.
+        </p>
+      `;
+    }
+
+    function pollBarHtml(item) {
+      const party = item.party || item.shortName || "Party";
+      const percentage = Math.max(0, Math.min(100, Number(item.percentage) || 0));
+
+      return `
+        <div class="poll-bar-row">
+          <div class="poll-party">${escapeHtml(party)}</div>
+          <div class="poll-track" aria-label="${escapeAttr(party)} ${percentage}%">
+            <div class="poll-fill" style="width: ${percentage}%"></div>
+          </div>
+          <div class="poll-percent">${percentage}%</div>
+        </div>
+      `;
     }
 
     function renderPmqs(data) {
@@ -1475,6 +1755,14 @@
     });
 
     refreshBtn.addEventListener("click", loadPmqs);
+    refreshPollsBtn.addEventListener("click", loadUkPolls);
+
+    pageButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        showPage(button.dataset.page);
+      });
+    });
+
     closeContextBtn.addEventListener("click", closeContextModal);
     closeQuestionBtn.addEventListener("click", closeQuestionModal);
 
