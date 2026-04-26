@@ -1189,7 +1189,7 @@
 function pollBarHtml(item) {
   const party = item.party || item.shortName || "Party";
   const percentage = Math.max(0, Math.min(100, Number(item.percentage) || 0));
-  const color = getPartyColor(party);
+  const color = item.color || getPartyColor(party);
 
   return `
     <div class="poll-bar-row">
