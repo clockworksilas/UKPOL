@@ -124,6 +124,7 @@
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+      align-items: flex-start;
     }
 
     button {
@@ -172,6 +173,100 @@
     .secondary:hover {
       color: var(--gov-blue-dark);
       border-color: var(--gov-blue-dark);
+    }
+
+    .pmqs-calendar-shell {
+      position: relative;
+    }
+
+    .calendar-popover {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      width: min(360px, calc(100vw - 32px));
+      background: var(--gov-white);
+      color: var(--gov-black);
+      border: 1px solid var(--gov-border);
+      border-top: 5px solid var(--gov-blue);
+      box-shadow: 0 8px 28px rgba(0,0,0,.25);
+      padding: 16px;
+      z-index: 20;
+    }
+
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .calendar-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--gov-black);
+    }
+
+    .calendar-nav-btn {
+      padding: 7px 10px;
+      box-shadow: none;
+      border: 2px solid var(--gov-blue);
+      background: var(--gov-white);
+      color: var(--gov-blue);
+      width: auto;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .calendar-weekday {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--gov-dark-grey);
+      text-align: center;
+      padding: 6px 0;
+    }
+
+    .calendar-day {
+      min-height: 38px;
+      padding: 6px 0;
+      border: 1px solid var(--gov-border);
+      background: var(--gov-light-grey);
+      color: var(--gov-dark-grey);
+      box-shadow: none;
+      font-weight: 700;
+      width: 100%;
+    }
+
+    .calendar-day.available {
+      background: var(--gov-white);
+      color: var(--gov-blue);
+      border: 2px solid var(--gov-blue);
+    }
+
+    .calendar-day.available:hover {
+      background: var(--gov-blue);
+      color: var(--gov-white);
+    }
+
+    .calendar-day.selected {
+      background: var(--gov-blue-dark);
+      color: var(--gov-white);
+      border-color: var(--gov-blue-dark);
+    }
+
+    .calendar-day.empty-day {
+      visibility: hidden;
+    }
+
+    .calendar-note {
+      margin: 12px 0 0;
+      color: var(--gov-dark-grey);
+      font-size: 0.9rem;
+      line-height: 1.45;
     }
 
     .status-box {
@@ -668,6 +763,20 @@
         width: 100%;
       }
 
+      .calendar-nav-btn {
+        width: auto;
+      }
+
+      .pmqs-calendar-shell {
+        width: 100%;
+      }
+
+      .calendar-popover {
+        position: static;
+        width: 100%;
+        margin-top: 10px;
+      }
+
       .modal {
         padding: 18px;
       }
@@ -782,6 +891,26 @@
 
           <div class="btns">
             <button class="secondary" id="refreshBtn">Refresh PMQs</button>
+
+            <div class="pmqs-calendar-shell">
+              <button class="secondary" id="calendarToggleBtn" type="button">
+                Choose PMQs date
+              </button>
+
+              <div class="calendar-popover hidden" id="calendarPopover">
+                <div class="calendar-header">
+                  <button class="calendar-nav-btn" id="prevMonthBtn" type="button" aria-label="Previous month">‹</button>
+                  <div class="calendar-title" id="calendarTitle">Month Year</div>
+                  <button class="calendar-nav-btn" id="nextMonthBtn" type="button" aria-label="Next month">›</button>
+                </div>
+
+                <div class="calendar-grid" id="calendarGrid"></div>
+
+                <p class="calendar-note">
+                  Pick a Wednesday PMQs date. This updates the page once, but reloading the site returns to the latest PMQs.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -875,6 +1004,8 @@
     let latestQuotes = [];
     let latestOppositionQuestions = [];
     let latestPollsLoaded = false;
+    let calendarViewDate = new Date();
+    let selectedPmqsDate = "";
 
     const loginModal = document.getElementById("loginModal");
     const passwordInput = document.getElementById("passwordInput");
@@ -891,6 +1022,13 @@
     const pmqsSummaryText = document.getElementById("pmqsSummaryText");
     const oppositionQuestionsList = document.getElementById("oppositionQuestionsList");
     const topWordsList = document.getElementById("topWordsList");
+
+    const calendarToggleBtn = document.getElementById("calendarToggleBtn");
+    const calendarPopover = document.getElementById("calendarPopover");
+    const calendarTitle = document.getElementById("calendarTitle");
+    const calendarGrid = document.getElementById("calendarGrid");
+    const prevMonthBtn = document.getElementById("prevMonthBtn");
+    const nextMonthBtn = document.getElementById("nextMonthBtn");
 
     const contextModal = document.getElementById("contextModal");
     const closeContextBtn = document.getElementById("closeContextBtn");
@@ -958,6 +1096,32 @@
       if (!response.ok || data.ok === false) {
         if (response.status === 401) clearSavedPassword();
         throw new Error(data.detail || data.error || `PMQs request failed: ${response.status}`);
+      }
+
+      return data.result || data;
+    }
+
+    async function fetchPmqsByDate(pmqsDate) {
+      const password = getSavedPassword();
+
+      if (!password) {
+        throw new Error("No saved password. Please log in again.");
+      }
+
+      const response = await fetch(`${WORKER_BASE_URL}/api/pmq/date`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          password,
+          date: pmqsDate
+        })
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || data.ok === false) {
+        if (response.status === 401) clearSavedPassword();
+        throw new Error(data.detail || data.error || `PMQs date request failed: ${response.status}`);
       }
 
       return data.result || data;
@@ -1055,6 +1219,7 @@
 
     async function loadPmqs() {
       refreshBtn.disabled = true;
+      calendarToggleBtn.disabled = true;
       refreshBtn.textContent = "Loading...";
       statusBox.textContent = "Loading latest PMQs quotes...";
       quoteGrid.innerHTML = "";
@@ -1096,6 +1261,64 @@
         }
       } finally {
         refreshBtn.disabled = false;
+        calendarToggleBtn.disabled = false;
+        refreshBtn.textContent = "Refresh PMQs";
+      }
+    }
+
+    async function loadPmqsForDate(pmqsDate) {
+      refreshBtn.disabled = true;
+      calendarToggleBtn.disabled = true;
+      refreshBtn.textContent = "Loading...";
+      statusBox.textContent = `Loading PMQs for ${formatDate(pmqsDate)}...`;
+
+      quoteGrid.innerHTML = "";
+      pmqsSummaryText.textContent = "Loading the PMQs summary for this date...";
+      oppositionQuestionsList.innerHTML = "<li>Loading opposition questions...</li>";
+      topWordsList.innerHTML = `
+        <div class="word-item">
+          <span class="word-rank">Loading</span>
+          <span class="word-text">...</span>
+          <span class="word-count">Counting words</span>
+        </div>
+      `;
+
+      try {
+        const data = await fetchPmqsByDate(pmqsDate);
+        selectedPmqsDate = pmqsDate;
+        renderPmqs(data);
+
+        statusBox.innerHTML += `
+          <br>
+          <strong>Viewing selected PMQs date.</strong>
+          Reloading the page will return to the latest PMQs.
+        `;
+      } catch (error) {
+        statusBox.textContent = error.message || "Could not load PMQs for that date.";
+        pmqsSummaryText.textContent = "Could not load the PMQs summary for this date.";
+        oppositionQuestionsList.innerHTML = "<li>Could not load opposition questions for this date.</li>";
+        topWordsList.innerHTML = `
+          <div class="word-item">
+            <span class="word-rank">Unavailable</span>
+            <span class="word-text">—</span>
+            <span class="word-count">Could not count words</span>
+          </div>
+        `;
+
+        quoteGrid.innerHTML = `
+          <div class="empty">
+            <strong>Could not load PMQs for ${escapeHtml(formatDate(pmqsDate))}.</strong><br>
+            ${escapeHtml(error.message || "Unknown error")}
+          </div>
+        `;
+
+        if ((error.message || "").toLowerCase().includes("unauthorized")) {
+          loginModal.classList.remove("hidden");
+          appWrap.classList.add("hidden");
+        }
+      } finally {
+        refreshBtn.disabled = false;
+        calendarToggleBtn.disabled = false;
         refreshBtn.textContent = "Refresh PMQs";
       }
     }
@@ -1625,6 +1848,85 @@
       ];
     }
 
+    function toggleCalendar() {
+      calendarPopover.classList.toggle("hidden");
+
+      if (!calendarPopover.classList.contains("hidden")) {
+        renderCalendar();
+      }
+    }
+
+    function renderCalendar() {
+      const year = calendarViewDate.getFullYear();
+      const month = calendarViewDate.getMonth();
+
+      const monthTitle = new Date(year, month, 1).toLocaleDateString("en-GB", {
+        month: "long",
+        year: "numeric"
+      });
+
+      calendarTitle.textContent = monthTitle;
+
+      const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+      const firstDay = new Date(year, month, 1);
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const mondayBasedStart = (firstDay.getDay() + 6) % 7;
+
+      let html = weekdays
+        .map(day => `<div class="calendar-weekday">${day}</div>`)
+        .join("");
+
+      for (let i = 0; i < mondayBasedStart; i++) {
+        html += `<button class="calendar-day empty-day" type="button" tabindex="-1"></button>`;
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const iso = toLocalIsoDate(date);
+        const isWednesday = date.getDay() === 3;
+        const isSelected = selectedPmqsDate === iso;
+
+        html += `
+          <button
+            class="calendar-day ${isWednesday ? "available" : ""} ${isSelected ? "selected" : ""}"
+            type="button"
+            ${isWednesday ? `data-date="${iso}"` : "disabled"}
+            aria-label="${escapeAttr(formatDate(iso))}"
+          >
+            ${day}
+          </button>
+        `;
+      }
+
+      calendarGrid.innerHTML = html;
+
+      calendarGrid.querySelectorAll(".calendar-day.available").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const date = button.dataset.date;
+          calendarPopover.classList.add("hidden");
+          await loadPmqsForDate(date);
+        });
+      });
+    }
+
+    function changeCalendarMonth(amount) {
+      calendarViewDate = new Date(
+        calendarViewDate.getFullYear(),
+        calendarViewDate.getMonth() + amount,
+        1
+      );
+
+      renderCalendar();
+    }
+
+    function toLocalIsoDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+
+      return `${year}-${month}-${day}`;
+    }
+
     function condenseToMainQuestion(rawMain, fullSpeech) {
       const candidate = cleanOneLine(rawMain || "");
       const speech = cleanOneLine(fullSpeech || candidate);
@@ -1782,7 +2084,31 @@
       if (event.key === "Enter") login();
     });
 
-    refreshBtn.addEventListener("click", loadPmqs);
+    refreshBtn.addEventListener("click", async () => {
+      selectedPmqsDate = "";
+      await loadPmqs();
+    });
+
+    calendarToggleBtn.addEventListener("click", toggleCalendar);
+
+    prevMonthBtn.addEventListener("click", () => {
+      changeCalendarMonth(-1);
+    });
+
+    nextMonthBtn.addEventListener("click", () => {
+      changeCalendarMonth(1);
+    });
+
+    document.addEventListener("click", (event) => {
+      if (
+        !calendarPopover.classList.contains("hidden") &&
+        !calendarPopover.contains(event.target) &&
+        event.target !== calendarToggleBtn
+      ) {
+        calendarPopover.classList.add("hidden");
+      }
+    });
+
     refreshPollsBtn.addEventListener("click", loadUkPolls);
 
     pageButtons.forEach((button) => {
@@ -1806,6 +2132,7 @@
       if (event.key === "Escape") {
         closeContextModal();
         closeQuestionModal();
+        calendarPopover.classList.add("hidden");
       }
     });
 
